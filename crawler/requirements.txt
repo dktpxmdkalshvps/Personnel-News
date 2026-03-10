@@ -1,0 +1,19 @@
+# 크롤러 의존성
+requests==2.31.0
+beautifulsoup4==4.12.3
+lxml==5.1.0
+python-dotenv==1.0.1
+
+# DB (2단계)
+PyMySQL==1.1.0
+cryptography==42.0.5
+
+# 텔레그램 봇 (1단계)
+python-telegram-bot==20.8
+
+# 스케줄러
+APScheduler==3.10.4
+
+# 백엔드 API (3단계)
+fastapi==0.110.0
+uvicorn[standard]==0.27.1
