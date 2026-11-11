@@ -35,8 +35,8 @@ def run_crawl_and_send(use_db: bool = True, send_telegram: bool = True):
             init_db()
         except Exception as e:
             logger.error(f"DB 초기화 실패: {e}")
-            logger.warning("DB 없이 텔레그램 직접 전송 모드로 전환합니다.")
-            use_db = False
+            logger.error("DB 초기화 실패로 작업을 중단합니다. 중복 알림 방지를 위해 자동 전환하지 않습니다.")
+            return
 
     # 2단계: 크롤링
     all_items = []
