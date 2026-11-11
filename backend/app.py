@@ -2,11 +2,12 @@
 FastAPI 백엔드 — React 대시보드용 REST API
 """
 import os
+from secrets import compare_digest
 from datetime import datetime
 from typing import Optional
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Header
 from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()
@@ -116,7 +117,12 @@ def get_stats():
 #  수동 크롤링 트리거 API (관리자용)
 # ─────────────────────────────────────────────
 @app.post("/api/crawl")
-def trigger_crawl():
+def trigger_crawl(x_admin_token: Optional[str] = Header(None)):
+    expected = os.getenv("ADMIN_API_TOKEN")
+    if not expected:
+        raise HTTPException(status_code=503, detail="관리자 API가 설정되지 않았습니다.")
+    if not x_admin_token or not compare_digest(x_admin_token, expected):
+        raise HTTPException(status_code=403, detail="관리자 권한이 필요합니다.")
     """수동으로 크롤링 실행"""
     from main import run_crawl_and_send
     try:
